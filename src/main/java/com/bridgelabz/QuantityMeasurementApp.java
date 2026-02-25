@@ -1,68 +1,57 @@
-/**
- * Quantity Measurement App - UC1: Feet Measurement equality
- *
- * This class is responsible for checking the equality of two numerical
- * values measured in feet in the Quantity Measurement Application
- */
 package com.bridgelabz;
 
-import java.util.Scanner;
-
-//Main class
 public class QuantityMeasurementApp {
-    //Inner class to represent feet measurements
-    public static class Feet{
-        //field to hold value
-        private final double feet;
-        //parameterized constructor
-        Feet(double feet){
-            this.feet = feet;
+
+    static class Feet {
+        private final double value;
+
+        public Feet(double value) {
+            if (Double.isNaN(value) || Double.isInfinite(value)) {
+                throw new IllegalArgumentException("Invalid numeric value for Feet");
+            }
+            this.value = value;
         }
 
-        /**
-         * Override of equals method to allow comarision of values
-         * between Feet classes
-         *
-         * here we check:
-         * 1. if both references are the same
-         * 2. is the passed reference null
-         * 3. are both the references of the same class
-         * 4. value comparison using Double.compare instead of ==
-         *
-         * @param obj Object passed to be compared with current instance
-         * @return boolean indicating whether values are same or not
-         */
-        @Override
-        public boolean equals(Object obj) {
-            if(this == obj){
-
-            }
-            if(obj == null || getClass() != obj.getClass()){
-                return false;
-            }
-
-            Feet comClass = (Feet) obj;
-            return Double.compare(this.feet,comClass.feet) == 0;
+        public boolean equals(Feet other) {
+            if (other == null) return false;
+            return Double.compare(this.value, other.value) == 0;
         }
     }
-    //main method
-    public static void main(String[] args){
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter first Feet measurement: ");
-        double input1 = scanner.nextDouble();
-        System.out.println("Enter second Feet measurement: ");
-        double input2 = scanner.nextDouble();
+    static class Inches {
+        private final double value;
 
-        //object instantiation
-        Feet feet1 = new Feet(input1);
-        Feet feet2 = new Feet(input2);
-
-        //Feet class equals invocation
-        if(feet1.equals(feet2)){
-            System.out.println("Both feet object are equal in value");
-        }else{
-            System.out.println("Both feet object are unequal in value");
+        public Inches(double value) {
+            if (Double.isNaN(value) || Double.isInfinite(value)) {
+                throw new IllegalArgumentException("Invalid numeric value for Inches");
+            }
+            this.value = value;
         }
+
+        public boolean equals(Inches other) {
+            if (other == null) return false;
+            return Double.compare(this.value, other.value) == 0;
+        }
+    }
+
+    public static boolean checkFeetEquality(double value1, double value2) {
+        Feet feet1 = new Feet(value1);
+        Feet feet2 = new Feet(value2);
+        return feet1.equals(feet2);
+    }
+
+    public static boolean checkInchesEquality(double value1, double value2) {
+        Inches inch1 = new Inches(value1);
+        Inches inch2 = new Inches(value2);
+        return inch1.equals(inch2);
+    }
+
+    public static void main(String[] args) {
+
+        boolean feetResult = checkFeetEquality(1.0, 1.0);
+        System.out.println("1.0 ft and 1.0 ft Equal? " + feetResult);
+
+        boolean inchResult = checkInchesEquality(1.0, 1.0);
+        System.out.println("1.0 inch and 1.0 inch Equal? " + inchResult);
     }
 }
