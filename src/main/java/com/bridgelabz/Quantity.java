@@ -7,16 +7,22 @@ public class Quantity<U extends IMeasurable> {
     private final double value;
     private final U unit;
 
-    public Quantity(double value, U unit) {
+    public Quantity<U> subtract(Quantity<U> other) {
 
-        if (!Double.isFinite(value))
-            throw new IllegalArgumentException("Invalid value");
+        if (other == null)
+            throw new IllegalArgumentException("Quantity cannot be null");
 
-        if (unit == null)
-            throw new IllegalArgumentException("Unit cannot be null");
+        if (!unit.getClass().equals(other.unit.getClass()))
+            throw new IllegalArgumentException("Different measurement categories");
 
-        this.value = value;
-        this.unit = unit;
+        double base1 = unit.convertToBaseUnit(value);
+        double base2 = other.unit.convertToBaseUnit(other.value);
+
+        double resultBase = base1 - base2;
+
+        double result = unit.convertFromBaseUnit(resultBase);
+
+        return new Quantity<>(result, unit);
     }
 
     public double getValue() {

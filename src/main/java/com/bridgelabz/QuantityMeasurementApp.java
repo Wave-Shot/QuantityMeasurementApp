@@ -40,5 +40,14 @@ public class QuantityMeasurementApp {
         System.out.println(v1.add(v2));
 
         System.out.println(v1.add(v3, VolumeUnit.LITRE));
+
+        Quantity<LengthUnit> l1 = new Quantity<>(10.0, LengthUnit.FEET);
+        Quantity<LengthUnit> l2 = new Quantity<>(6.0, LengthUnit.INCHES);
+
+        System.out.println(l1.subtract(l2));
+
+        System.out.println(l1.subtract(l2, LengthUnit.INCHES));
+
+        System.out.println(l1.divide(new Quantity<>(2.0, LengthUnit.FEET)));
     }
 }
