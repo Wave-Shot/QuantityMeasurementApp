@@ -1,19 +1,18 @@
-package com.bridgelabz;
+package com.quantity;
 
 public enum LengthUnit {
-
     FEET(1.0),
-    INCH(1.0 / 12.0),
+    INCHES(1.0 / 12.0),
     YARDS(3.0),
-    CENTIMETERS(0.393701 / 12.0);
+    CENTIMETERS(0.0328084);
 
-    private final double conversionFactorToFeet;
+    private final double conversionFactor;
 
-    LengthUnit(double conversionFactorToFeet) {
-        this.conversionFactorToFeet = conversionFactorToFeet;
+    LengthUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
     }
 
-    public double toFeet(double value) {
-        return value * conversionFactorToFeet;
+    public double getConversionFactor() {
+        return conversionFactor;
     }
 }

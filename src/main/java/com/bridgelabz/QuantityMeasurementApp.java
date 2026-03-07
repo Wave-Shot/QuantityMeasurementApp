@@ -1,27 +1,38 @@
-package com.bridgelabz;
+package com.quantity;
 
 public class QuantityMeasurementApp {
 
+    public static void demonstrateLengthConversion(double value, LengthUnit fromUnit, LengthUnit toUnit) {
+        double result = QuantityLength.convert(value, fromUnit, toUnit);
+        System.out.println("convert(" + value + ", " + fromUnit + ", " + toUnit + ") -> " + result);
+    }
+
+    public static void demonstrateLengthConversion(QuantityLength length, LengthUnit toUnit) {
+        QuantityLength converted = length.convertTo(toUnit);
+        System.out.println(length + " -> " + converted);
+    }
+
+    public static void demonstrateLengthEquality(QuantityLength a, QuantityLength b) {
+        System.out.println(a + " equals " + b + " ? " + a.equals(b));
+    }
+
+    public static void demonstrateLengthComparison(double v1, LengthUnit u1, double v2, LengthUnit u2) {
+        QuantityLength q1 = new QuantityLength(v1, u1);
+        QuantityLength q2 = new QuantityLength(v2, u2);
+        demonstrateLengthEquality(q1, q2);
+    }
+
     public static void main(String[] args) {
 
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.YARDS);
-        QuantityLength q2 = new QuantityLength(3.0, LengthUnit.FEET);
+        demonstrateLengthConversion(1.0, LengthUnit.FEET, LengthUnit.INCHES);
+        demonstrateLengthConversion(3.0, LengthUnit.YARDS, LengthUnit.FEET);
+        demonstrateLengthConversion(36.0, LengthUnit.INCHES, LengthUnit.YARDS);
+        demonstrateLengthConversion(1.0, LengthUnit.CENTIMETERS, LengthUnit.INCHES);
+        demonstrateLengthConversion(0.0, LengthUnit.FEET, LengthUnit.INCHES);
 
-        System.out.println("1 Yard == 3 Feet ? " + q1.equals(q2));
+        QuantityLength length = new QuantityLength(3.0, LengthUnit.YARDS);
+        demonstrateLengthConversion(length, LengthUnit.INCHES);
 
-        QuantityLength q3 = new QuantityLength(1.0, LengthUnit.YARDS);
-        QuantityLength q4 = new QuantityLength(36.0, LengthUnit.INCH);
-
-        System.out.println("1 Yard == 36 Inches ? " + q3.equals(q4));
-
-        QuantityLength q5 = new QuantityLength(1.0, LengthUnit.CENTIMETERS);
-        QuantityLength q6 = new QuantityLength(0.393701, LengthUnit.INCH);
-
-        System.out.println("1 CM == 0.393701 Inch ? " + q5.equals(q6));
-
-        QuantityLength q7 = new QuantityLength(2.0, LengthUnit.YARDS);
-        QuantityLength q8 = new QuantityLength(72.0, LengthUnit.INCH);
-
-        System.out.println("2 Yards == 72 Inches ? " + q7.equals(q8));
+        demonstrateLengthComparison(1, LengthUnit.FEET, 12, LengthUnit.INCHES);
     }
 }
