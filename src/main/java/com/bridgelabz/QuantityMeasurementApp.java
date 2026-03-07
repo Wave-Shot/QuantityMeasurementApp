@@ -29,5 +29,16 @@ public class QuantityMeasurementApp {
         demonstrateEquality(w1, w2);
         demonstrateConversion(w1, WeightUnit.GRAM);
         demonstrateAddition(w1, w2, WeightUnit.KILOGRAM);
+        Quantity<VolumeUnit> v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> v2 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<VolumeUnit> v3 = new Quantity<>(1.0, VolumeUnit.GALLON);
+
+        System.out.println(v1.equals(v2));
+
+        System.out.println(v1.convertTo(VolumeUnit.MILLILITRE));
+
+        System.out.println(v1.add(v2));
+
+        System.out.println(v1.add(v3, VolumeUnit.LITRE));
     }
 }
