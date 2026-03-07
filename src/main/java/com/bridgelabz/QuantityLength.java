@@ -50,32 +50,32 @@ public class QuantityLength {
         if (a == null || b == null)
             throw new IllegalArgumentException("Length cannot be null");
 
-        double aBase = a.value * a.unit.getConversionFactor();
-        double bBase = b.value * b.unit.getConversionFactor();
+        double base1 = a.value * a.unit.getConversionFactor();
+        double base2 = b.value * b.unit.getConversionFactor();
 
-        double sumBase = aBase + bBase;
+        double sumBase = base1 + base2;
 
         double result = sumBase / a.unit.getConversionFactor();
 
         return new QuantityLength(result, a.unit);
     }
 
-    public static QuantityLength add(double v1, LengthUnit u1, double v2, LengthUnit u2, LengthUnit target) {
+    public static QuantityLength add(QuantityLength a, QuantityLength b, LengthUnit targetUnit) {
 
-        if (!Double.isFinite(v1) || !Double.isFinite(v2))
-            throw new IllegalArgumentException("Invalid value");
+        if (a == null || b == null)
+            throw new IllegalArgumentException("Length cannot be null");
 
-        if (u1 == null || u2 == null || target == null)
-            throw new IllegalArgumentException("Unit cannot be null");
+        if (targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
 
-        double base1 = v1 * u1.getConversionFactor();
-        double base2 = v2 * u2.getConversionFactor();
+        double base1 = a.value * a.unit.getConversionFactor();
+        double base2 = b.value * b.unit.getConversionFactor();
 
         double sumBase = base1 + base2;
 
-        double result = sumBase / target.getConversionFactor();
+        double result = sumBase / targetUnit.getConversionFactor();
 
-        return new QuantityLength(result, target);
+        return new QuantityLength(result, targetUnit);
     }
 
     private double toBaseUnit() {
