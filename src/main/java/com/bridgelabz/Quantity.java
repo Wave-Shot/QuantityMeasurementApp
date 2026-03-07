@@ -9,20 +9,13 @@ public class Quantity<U extends IMeasurable> {
 
     public Quantity<U> subtract(Quantity<U> other) {
 
-        if (other == null)
-            throw new IllegalArgumentException("Quantity cannot be null");
+        validateArithmeticOperands(other, unit, false);
 
-        if (!unit.getClass().equals(other.unit.getClass()))
-            throw new IllegalArgumentException("Different measurement categories");
+        double baseResult = performBaseArithmetic(other, ArithmeticOperation.SUBTRACT);
 
-        double base1 = unit.convertToBaseUnit(value);
-        double base2 = other.unit.convertToBaseUnit(other.value);
+        double result = unit.convertFromBaseUnit(baseResult);
 
-        double resultBase = base1 - base2;
-
-        double result = unit.convertFromBaseUnit(resultBase);
-
-        return new Quantity<>(result, unit);
+        return new Quantity<>(roundToTwoDecimals(result), unit);
     }
 
     public double getValue() {
@@ -47,17 +40,13 @@ public class Quantity<U extends IMeasurable> {
 
     public Quantity<U> add(Quantity<U> other) {
 
-        if (other == null)
-            throw new IllegalArgumentException("Quantity cannot be null");
+        validateArithmeticOperands(other, unit, false);
 
-        double base1 = unit.convertToBaseUnit(value);
-        double base2 = other.unit.convertToBaseUnit(other.value);
+        double baseResult = performBaseArithmetic(other, ArithmeticOperation.ADD);
 
-        double sumBase = base1 + base2;
+        double result = unit.convertFromBaseUnit(baseResult);
 
-        double result = unit.convertFromBaseUnit(sumBase);
-
-        return new Quantity<>(result, unit);
+        return new Quantity<>(roundToTwoDecimals(result), unit);
     }
 
     public Quantity<U> add(Quantity<U> other, U targetUnit) {
@@ -108,4 +97,71 @@ public class Quantity<U extends IMeasurable> {
     public String toString() {
         return "Quantity(" + value + ", " + unit.getUnitName() + ")";
     }
+
+    private enum ArithmeticOperation {
+
+        ADD {
+            public double compute(double a, double b) {
+                return a + b;
+            }
+        },
+
+        SUBTRACT {
+            public double compute(double a, double b) {
+                return a - b;
+            }
+        },
+
+        DIVIDE {
+            public double compute(double a, double b) {
+                if (b == 0) {
+                    throw new ArithmeticException("Division by zero");
+                }
+                return a / b;
+            }
+        };
+
+        public abstract double compute(double a, double b);
+    }
+
+    private void validateArithmeticOperands(Quantity<U> other, U targetUnit, boolean targetUnitRequired) {
+
+        if (other == null)
+            throw new IllegalArgumentException("Quantity cannot be null");
+
+        if (targetUnitRequired && targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
+
+        if (!unit.getClass().equals(other.unit.getClass()))
+            throw new IllegalArgumentException("Different measurement categories");
+
+        if (!Double.isFinite(value) || !Double.isFinite(other.value))
+            throw new IllegalArgumentException("Invalid numeric value");
+    }
+    private void validateArithmeticOperands(Quantity<U> other, U targetUnit, boolean targetUnitRequired) {
+
+        if (other == null)
+            throw new IllegalArgumentException("Quantity cannot be null");
+
+        if (targetUnitRequired && targetUnit == null)
+            throw new IllegalArgumentException("Target unit cannot be null");
+
+        if (!unit.getClass().equals(other.unit.getClass()))
+            throw new IllegalArgumentException("Different measurement categories");
+
+        if (!Double.isFinite(value) || !Double.isFinite(other.value))
+            throw new IllegalArgumentException("Invalid numeric value");
+    }
+
+    public double divide(Quantity<U> other) {
+
+        validateArithmeticOperands(other, null, false);
+
+        return performBaseArithmetic(other, ArithmeticOperation.DIVIDE);
+    }
+
+    private double roundToTwoDecimals(double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
+
 }
