@@ -162,6 +162,8 @@ public class Quantity<U extends IMeasurable> {
 
     private double roundToTwoDecimals(double value) {
         return Math.round(value * 100.0) / 100.0;
+        unit.validateOperationSupport(operation.name());
     }
+
 
 }

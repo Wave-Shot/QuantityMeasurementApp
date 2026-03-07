@@ -1,5 +1,3 @@
-package com.quantity;
-
 public interface IMeasurable {
 
     double getConversionFactor();
@@ -9,4 +7,11 @@ public interface IMeasurable {
     double convertFromBaseUnit(double baseValue);
 
     String getUnitName();
+
+    default boolean supportsArithmetic() {
+        return true;
+    }
+
+    default void validateOperationSupport(String operation) {
+    }
 }
