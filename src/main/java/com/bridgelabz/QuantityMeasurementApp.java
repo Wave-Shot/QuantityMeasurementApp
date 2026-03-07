@@ -2,41 +2,23 @@ package com.quantity;
 
 public class QuantityMeasurementApp {
 
-    public static void demonstrateAddition(QuantityLength a, QuantityLength b, LengthUnit target) {
-        QuantityLength result = QuantityLength.add(a, b, target);
-        System.out.println("add(" + a + ", " + b + ", " + target + ") -> " + result);
-    }
-
     public static void main(String[] args) {
 
-        demonstrateAddition(
-                new QuantityLength(1.0, LengthUnit.FEET),
-                new QuantityLength(12.0, LengthUnit.INCHES),
-                LengthUnit.FEET
-        );
+        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength q2 = new QuantityLength(12.0, LengthUnit.INCHES);
 
-        demonstrateAddition(
-                new QuantityLength(1.0, LengthUnit.FEET),
-                new QuantityLength(12.0, LengthUnit.INCHES),
-                LengthUnit.INCHES
-        );
+        System.out.println(q1.convertTo(LengthUnit.INCHES));
 
-        demonstrateAddition(
-                new QuantityLength(1.0, LengthUnit.FEET),
-                new QuantityLength(12.0, LengthUnit.INCHES),
-                LengthUnit.YARDS
-        );
+        System.out.println(QuantityLength.add(q1, q2, LengthUnit.FEET));
 
-        demonstrateAddition(
-                new QuantityLength(1.0, LengthUnit.YARDS),
-                new QuantityLength(3.0, LengthUnit.FEET),
-                LengthUnit.YARDS
-        );
+        QuantityLength q3 = new QuantityLength(36.0, LengthUnit.INCHES);
+        QuantityLength q4 = new QuantityLength(1.0, LengthUnit.YARDS);
 
-        demonstrateAddition(
-                new QuantityLength(36.0, LengthUnit.INCHES),
-                new QuantityLength(1.0, LengthUnit.YARDS),
-                LengthUnit.FEET
-        );
+        System.out.println(q3.equals(q4));
+
+        QuantityLength q5 = new QuantityLength(1.0, LengthUnit.YARDS);
+        QuantityLength q6 = new QuantityLength(3.0, LengthUnit.FEET);
+
+        System.out.println(QuantityLength.add(q5, q6, LengthUnit.YARDS));
     }
 }
